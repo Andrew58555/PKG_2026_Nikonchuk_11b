@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ПКГ — Лабораторная работа №2</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div>
+    <div class="eyebrow">ПКГ • Лабораторная работа №2</div>
+    <h1>Image Metadata Scanner</h1>
+    <p class="subtitle">Ручной побайтовый анализ JPG, GIF, TIFF, BMP, PNG и PCX</p>
+  </div>
+  <div class="student">
+    <b>Никончук Андрей Андреевич</b>
+    <span>11Б подгруппа</span>
+  </div>
+</header>
+
+<main class="container">
+  <section class="card hero">
+    <div class="hero-copy">
+      <h2>Сканирование папки</h2>
+      <p>Файлы читаются локально в браузере. Для метаданных загружаются только необходимые участки, а обработка выполняется в Web Workers, поэтому интерфейс не блокируется.</p>
+    </div>
+    <div class="actions">
+      <label class="button primary" for="folderInput">Выбрать папку</label>
+      <input id="folderInput" type="file" webkitdirectory directory multiple hidden>
+      <button id="clearBtn" class="button secondary" disabled>Очистить</button>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-head">
+        <span id="progressText">Ожидание файлов</span>
+        <span id="progressPercent">0%</span>
+      </div>
+      <div class="progress"><div id="progressBar"></div></div>
+      <div class="stats">
+        <span>Файлов: <b id="totalCount">0</b></span>
+        <span>Готово: <b id="doneCount">0</b></span>
+        <span>Ошибок/битых: <b id="badCount">0</b></span>
+        <span>Время: <b id="elapsed">0.0 c</b></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="card toolbar">
+    <div class="searchbox">
+      <span>⌕</span><input id="search" placeholder="Поиск по имени или формату…">
+    </div>
+    <select id="statusFilter">
+      <option value="all">Все статусы</option>
+      <option value="ok">Корректные</option>
+      <option value="bad">Повреждённые / неизвестные</option>
+    </select>
+    <select id="formatFilter">
+      <option value="all">Все форматы</option>
+      <option>JPEG</option><option>GIF</option><option>TIFF</option>
+      <option>BMP</option><option>PNG</option><option>PCX</option>
+    </select>
+    <button id="exportBtn" class="button secondary" disabled>Экспорт CSV</button>
+  </section>
+
+  <section class="card table-card">
+    <div class="pagination" aria-label="Навигация по таблице">
+      <button id="prevPage" class="button secondary" disabled>← Назад</button>
+      <span id="pageInfo">Нет результатов</span>
+      <button id="nextPage" class="button secondary" disabled>Вперёд →</button>
+      <span class="muted">По 100 строк на странице</span>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Превью</th><th>Файл</th><th>Формат</th><th>Размер</th><th>Разрешение</th>
+            <th>Глубина цвета</th><th>Сжатие</th><th>Статус</th><th>Дополнительно</th>
+          </tr>
+        </thead>
+        <tbody id="resultsBody">
+          <tr class="empty"><td colspan="9">Выберите папку для начала анализа</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card notes">
+    <h2>Что реализовано</h2>
+    <div class="feature-grid">
+      <div><b>Без сторонних парсеров</b><span>Метаданные извлекаются из сигнатур, заголовков, чанков и TIFF IFD вручную.</span></div>
+      <div><b>Потоковая обработка</b><span>Для каждого файла читаются только необходимые диапазоны Blob, без загрузки изображения целиком.</span></div>
+      <div><b>Web Workers</b><span>Несколько worker-потоков обрабатывают файлы параллельно, UI остаётся отзывчивым.</span></div>
+      <div><b>Валидация</b><span>Проверяются magic numbers, границы структур, PNG IEND, JPEG EOI и ключевые TIFF-смещения.</span></div>
+    </div>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
