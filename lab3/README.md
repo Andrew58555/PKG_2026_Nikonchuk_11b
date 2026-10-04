@@ -50,7 +50,7 @@ lab3/
 Страница ЛР3 откроется по адресу:
 
 ```text
-https://USERNAME.github.io/REPOSITORY/lab3/
+https://andrew58555.github.io/PKG_2026_Nikonchuk_11b/lab3/
 ```
 
 ## Автотесты
@@ -58,7 +58,7 @@ https://USERNAME.github.io/REPOSITORY/lab3/
 Открой:
 
 ```text
-https://USERNAME.github.io/REPOSITORY/lab3/tests/
+https://andrew58555.github.io/PKG_2026_Nikonchuk_11b/lab3/tests/
 ```
 
 Ожидается `13/13`.
