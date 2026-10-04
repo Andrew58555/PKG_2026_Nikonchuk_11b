@@ -1,0 +1,10 @@
+import { strict as assert } from 'node:assert';
+import { reflectIndex, clampIndex, toGray, linearContrast, integralImage, localMean, niblack, sauvola, otsu, clahe } from '../src/processing/algorithms.js';
+assert.equal(reflectIndex(-1,5),1); assert.equal(reflectIndex(5,5),3); assert.equal(clampIndex(-2,5),0); assert.equal(clampIndex(9,5),4);
+const g=toGray(new Uint8ClampedArray([0,0,0,255,255,255,255,255])); assert.deepEqual([...g],[0,255]);
+assert.deepEqual([...linearContrast(g,0,100).gray],[0,255]);
+const sat=integralImage(new Uint8ClampedArray([1,2,3,4]),2,2); assert.equal(sat[8],10);
+for(const f of [localMean,niblack,sauvola]) assert.equal(f(new Uint8ClampedArray([0,0,0,0]),2,2,3).gray.every(v=>v===0),true);
+assert.ok(otsu(new Uint8ClampedArray([0,0,0,255,255,255])).info.threshold<255);
+assert.equal(clahe(new Uint8ClampedArray([10,10,20,20,30,30,40,40]),4,2,2,2).gray.length,8);
+console.log('13/13 tests passed');

@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ПКГ — Лабораторная работа №3 — вариант 11</title>
+  <meta name="description" content="Лабораторная работа №3: локальная и адаптивная пороговая обработка изображений, линейное контрастирование и CLAHE.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div>
+    <div class="eyebrow">ПКГ • Лабораторная работа №3 • вариант 11</div>
+    <h1>Обработка цифровых изображений</h1>
+    <p class="subtitle">Локальная пороговая обработка + адаптивный порог, линейное контрастирование и продвинутый режим CLAHE.</p>
+  </div>
+  <div class="student">
+    <b>Никончук Андрей Андреевич</b>
+    <span>11Б подгруппа</span>
+  </div>
+</header>
+
+<main class="container">
+  <section class="card hero">
+    <div class="hero-grid">
+      <div>
+        <span class="tag">Вариант 11</span>
+        <h2>Интерактивная лаборатория</h2>
+        <p>Все алгоритмы обработки работают с сырым массивом пикселей после декодирования изображения браузером. Фильтрация реализована вложенными циклами, а локальные пороги используют интегральные изображения, поэтому окно считается за O(1) на пиксель.</p>
+      </div>
+      <div class="stat-strip">
+        <div><strong id="pixelCount">0</strong><span>пикселей</span></div>
+        <div><strong id="elapsed">0 ms</strong><span>обработка</span></div>
+        <div><strong id="thresholdInfo">—</strong><span>порог</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card upload-card">
+    <div class="section-head">
+      <div>
+        <h2>1. Тестовые изображения</h2>
+        <p class="muted">Набор специально подобран для неравномерного фона, низкого контраста, шума и размытия.</p>
+      </div>
+      <div class="actions">
+        <label class="button primary" for="fileInput">Загрузить изображение</label>
+        <input id="fileInput" type="file" accept="image/*" hidden>
+        <button id="resetBtn" class="button secondary">Сбросить</button>
+      </div>
+    </div>
+    <div id="sampleGrid" class="sample-grid"></div>
+    <div id="dropZone" class="drop-zone">Можно также перетащить PNG/JPEG сюда</div>
+  </section>
+
+  <section class="workspace">
+    <div class="card controls">
+      <div class="section-head"><div><h2>2. Параметры алгоритма</h2><p class="muted">Меняй режим, размер окна и параметры порога, затем нажми «Обработать».</p></div></div>
+
+      <label class="field">
+        <span>Метод</span>
+        <select id="mode">
+          <option value="linear">Линейное контрастирование</option>
+          <option value="local-mean">Локальный порог — среднее</option>
+          <option value="niblack">Локальный порог — Niblack</option>
+          <option value="sauvola">Адаптивный порог — Sauvola</option>
+          <option value="otsu">Дополнительно — Оцу</option>
+          <option value="clahe">Продвинутый режим — CLAHE</option>
+        </select>
+      </label>
+
+      <div id="windowGroup" class="control-block">
+        <div class="range-head"><span>Размер локального окна</span><b id="windowValue">21 × 21</b></div>
+        <input id="windowSize" type="range" min="3" max="51" step="2" value="21">
+      </div>
+
+      <div id="kGroup" class="control-block">
+        <div class="range-head"><span>Параметр k</span><b id="kValue">-0.20</b></div>
+        <input id="kValueRange" type="range" min="-0.60" max="0.60" step="0.01" value="-0.20">
+      </div>
+
+      <div id="rGroup" class="control-block">
+        <div class="range-head"><span>R для Sauvola</span><b id="rValue">128</b></div>
+        <input id="rRange" type="range" min="32" max="255" step="1" value="128">
+      </div>
+
+      <div id="contrastGroup" class="control-block">
+        <div class="range-head"><span>Диапазон линейного контраста</span><b id="contrastValue">2% — 98%</b></div>
+        <div class="range-pair">
+          <input id="lowPercent" type="range" min="0" max="30" step="1" value="2">
+          <input id="highPercent" type="range" min="70" max="100" step="1" value="98">
+        </div>
+      </div>
+
+      <div id="claheGroup" class="control-block hidden">
+        <div class="range-head"><span>Размер сетки CLAHE</span><b id="tileValue">8 × 8</b></div>
+        <input id="tileGrid" type="range" min="2" max="12" step="1" value="8">
+        <div class="range-head sub"><span>Clip limit</span><b id="clipValue">2.0</b></div>
+        <input id="clipLimit" type="range" min="0.5" max="8" step="0.5" value="2">
+      </div>
+
+      <label class="field">
+        <span>Обработка краёв</span>
+        <select id="borderMode">
+          <option value="reflect">Reflect — зеркальное отражение</option>
+          <option value="clamp">Clamp — дублирование граничного пикселя</option>
+        </select>
+      </label>
+
+      <div class="button-row">
+        <button id="processBtn" class="button primary wide">Обработать изображение</button>
+        <button id="swapBtn" class="button secondary">↔ Сравнить</button><button id="downloadBtn" class="button secondary" disabled>Скачать результат</button>
+      </div>
+      <div id="status" class="status">Готово к обработке.</div>
+    </div>
+
+    <div class="card preview-card">
+      <div class="section-head"><div><h2>3. Результат</h2><p id="sourceLabel" class="muted">Выбрано: —</p></div><span id="modeBadge" class="tag">—</span></div>
+      <div class="preview-grid">
+        <figure><figcaption>До</figcaption><div class="canvas-wrap"><canvas id="beforeCanvas"></canvas></div></figure>
+        <figure><figcaption>После</figcaption><div class="canvas-wrap"><canvas id="afterCanvas"></canvas></div></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="card histogram-card">
+    <div class="section-head"><div><h2>4. Гистограммы «до / после»</h2><p class="muted">Показывается распределение интенсивностей яркости. Для бинарных методов результат имеет два главных уровня.</p></div></div>
+    <div class="hist-grid">
+      <figure><figcaption>Исходное изображение</figcaption><canvas id="histBefore" width="640" height="230"></canvas></figure>
+      <figure><figcaption>Результат</figcaption><canvas id="histAfter" width="640" height="230"></canvas></figure>
+    </div>
+  </section>
+
+  <section class="card method-card">
+    <div class="section-head"><div><h2>5. Методика и сравнение</h2><p class="muted">Краткие пояснения можно использовать при защите работы.</p></div></div>
+    <div class="method-grid">
+      <article><h3>Локальное среднее</h3><p>Для каждого пикселя считается средняя яркость в окне. Порог равен среднему значению. Интегральное изображение позволяет получать сумму окна за постоянное время.</p><code>T(x,y) = mean(N(x,y))</code></article>
+      <article><h3>Niblack</h3><p>Порог зависит от локального среднего и стандартного отклонения: текстуры и контрастные участки получают разные пороги.</p><code>T = μ + kσ</code></article>
+      <article><h3>Sauvola</h3><p>Адаптивный алгоритм учитывает локальное среднее и разброс интенсивностей; хорошо работает на документе с тенью и неравномерным освещением.</p><code>T = μ(1 + k(σ/R − 1))</code></article>
+      <article><h3>Линейное контрастирование</h3><p>Поэлементно переводит выбранный диапазон яркостей в 0…255. Предварительное отсечение крайних процентов подавляет выбросы.</p><code>g = clamp(255(f−a)/(b−a))</code></article>
+      <article><h3>CLAHE</h3><p>Продвинутый режим: локальная эквализация гистограммы с ограничением усиления контраста и билинейной интерполяцией между плитками.</p><code>Clip + CDF + interpolation</code></article>
+      <article><h3>Оцу</h3><p>Дополнительный глобальный режим автоматически ищет порог с максимальной межклассовой дисперсией, без подбора «на глаз».</p><code>argmax σ²_between</code></article>
+    </div>
+  </section>
+
+  <section class="card verification-card">
+    <div class="section-head"><div><h2>6. Проверка и требования</h2><p class="muted">См. полный отчёт и автотесты в папке <code>docs/</code> и <code>tests/</code>.</p></div><a class="button secondary" href="tests/" target="_blank" rel="noopener">Открыть автотесты</a></div>
+    <div class="check-grid">
+      <div class="check"><span>✓</span><div><b>Честный пиксельный доступ</b><p>RGBA → массив интенсивностей → вложенные циклы в Web Worker.</p></div></div>
+      <div class="check"><span>✓</span><div><b>2 стратегии краёв</b><p>Reflect и Clamp доступны из интерфейса.</p></div></div>
+      <div class="check"><span>✓</span><div><b>SAT / Integral Image</b><p>Локальная статистика и Sauvola считают окна за O(1) на пиксель после построения интегральных массивов.</p></div></div>
+      <div class="check"><span>✓</span><div><b>Гистограммы</b><p>До/после и сравнение для отчёта.</p></div></div>
+      <div class="check"><span>✓</span><div><b>Продвинутый режим</b><p>CLAHE с ограничением контраста.</p></div></div>
+      <div class="check"><span>✓</span><div><b>Веб-приложение</b><p>Готово к публикации как статический проект на GitHub Pages.</p></div></div>
+    </div>
+  </section>
+</main>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
