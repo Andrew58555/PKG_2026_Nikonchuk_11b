@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ЛР №2 — Анализ метаданных изображений</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">02</span>
+      <div>
+        <strong>ПКГ / ЛР</strong>
+        <small>вариант интерфейса</small>
+      </div>
+    </div>
+
+    <nav class="side-info">
+      <div class="side-label">Форматы</div>
+      <span>JPEG</span><span>GIF</span><span>TIFF</span><span>BMP</span><span>PNG</span><span>PCX</span>
+    </nav>
+
+    <div class="student">
+      <small>Выполнил</small>
+      <b>Никончук Андрей Андреевич</b>
+      <span>11Б подгруппа</span>
+    </div>
+  </aside>
+
+  <main class="workspace">
+    <header class="page-head">
+      <div>
+        <p class="kicker">Лабораторная работа №2</p>
+        <h1>Анализатор изображений</h1>
+        <p class="subtitle">Чтение метаданных напрямую из структуры графических файлов</p>
+      </div>
+      <div class="head-badge">LOCAL / BYTE PARSER</div>
+    </header>
+
+    <section class="scan-panel">
+      <div class="scan-intro">
+        <span class="section-number">01</span>
+        <div>
+          <h2>Источник данных</h2>
+          <p>Выберите папку с изображениями. Файлы обрабатываются локально в браузере, а разбор выполняется параллельно через Web Workers.</p>
+        </div>
+      </div>
+
+      <div class="scan-actions">
+        <label class="button primary" for="folderInput">+ Выбрать папку</label>
+        <input id="folderInput" type="file" webkitdirectory directory multiple hidden>
+        <button id="clearBtn" class="button ghost" disabled>Сбросить</button>
+      </div>
+
+      <div class="status-board">
+        <div class="progress-zone">
+          <div class="progress-head">
+            <span id="progressText">Ожидание файлов</span>
+            <b id="progressPercent">0%</b>
+          </div>
+          <div class="progress"><div id="progressBar"></div></div>
+        </div>
+        <div class="metrics">
+          <div><small>Файлы</small><strong id="totalCount">0</strong></div>
+          <div><small>Обработано</small><strong id="doneCount">0</strong></div>
+          <div><small>Ошибки</small><strong id="badCount">0</strong></div>
+          <div><small>Время</small><strong id="elapsed">0.0 c</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="results-section">
+      <div class="section-title">
+        <span class="section-number">02</span>
+        <div>
+          <h2>Результаты анализа</h2>
+          <p>Поиск, фильтрация и выгрузка полученных метаданных</p>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <label class="searchbox">
+          <span>Поиск</span>
+          <input id="search" placeholder="Имя файла или формат">
+        </label>
+        <label class="selectbox">
+          <span>Статус</span>
+          <select id="statusFilter">
+            <option value="all">Все</option>
+            <option value="ok">Корректные</option>
+            <option value="bad">Повреждённые / неизвестные</option>
+          </select>
+        </label>
+        <label class="selectbox">
+          <span>Формат</span>
+          <select id="formatFilter">
+            <option value="all">Все</option>
+            <option>JPEG</option><option>GIF</option><option>TIFF</option>
+            <option>BMP</option><option>PNG</option><option>PCX</option>
+          </select>
+        </label>
+        <button id="exportBtn" class="button export" disabled>Скачать CSV</button>
+      </div>
+
+      <div class="table-card">
+        <div class="pagination" aria-label="Навигация по таблице">
+          <span id="pageInfo">Нет результатов</span>
+          <div class="pager-buttons">
+            <button id="prevPage" class="button pager" disabled>←</button>
+            <button id="nextPage" class="button pager" disabled>→</button>
+          </div>
+          <span class="muted">100 строк / стр.</span>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Просмотр</th><th>Файл</th><th>Формат</th><th>Размер</th><th>Разрешение</th>
+                <th>Глубина</th><th>Сжатие</th><th>Статус</th><th>Сведения</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody">
+              <tr class="empty"><td colspan="9">Папка ещё не выбрана</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="tech-strip">
+      <span>ручной парсинг</span>
+      <span>частичное чтение Blob</span>
+      <span>Web Workers</span>
+      <span>проверка сигнатур</span>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920" integrity="sha512-L0ha0OXavK/8okipN9F8BtP84dg9DUhPERbBXzwI6dgTA55d2+yweo3pn5CSFYs45/r8md2+xvUPtTdvTNRfjA==" data-cf-beacon='{"version":"2024.11.0","token":"7939e04a4baf43c8b86a560f74aac60e","spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
