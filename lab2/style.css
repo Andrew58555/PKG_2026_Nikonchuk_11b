@@ -1,0 +1,324 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f7f5;
+  color: #222;
+}
+
+.container {
+  width: 92%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  background: #3f6f68;
+  color: white;
+  padding: 22px 0;
+  margin-bottom: 25px;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.header h1 {
+  margin: 0 0 5px;
+  font-size: 25px;
+}
+
+.header p {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.student {
+  font-size: 14px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 5px;
+}
+
+.block {
+  background: white;
+  border: 1px solid #d9dfdc;
+  border-radius: 7px;
+  padding: 22px;
+  margin-bottom: 20px;
+}
+
+.block h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.description,
+.formats {
+  color: #666;
+  font-size: 14px;
+}
+
+.formats {
+  margin: 16px 0 0;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.btn,
+.page-btn {
+  border: 1px solid #bfc9c5;
+  background: #f7f7f7;
+  color: #222;
+  padding: 9px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-main {
+  background: #4d8178;
+  color: white;
+  border-color: #4d8178;
+}
+
+.btn:hover:not(:disabled),
+.page-btn:hover:not(:disabled) {
+  opacity: 0.88;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.section-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#progressPercent {
+  color: #3f6f68;
+  font-size: 18px;
+}
+
+.progress {
+  width: 100%;
+  height: 12px;
+  background: #e5e9e7;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 14px 0 20px;
+}
+
+.progress div {
+  width: 0;
+  height: 100%;
+  background: #5f958b;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.stat {
+  background: #f6f8f7;
+  border: 1px solid #e0e5e3;
+  padding: 14px;
+  border-radius: 5px;
+}
+
+.stat span {
+  display: block;
+  color: #666;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.stat b {
+  font-size: 18px;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 12px;
+  align-items: end;
+  margin: 18px 0;
+}
+
+.filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filters label span {
+  font-size: 13px;
+  color: #555;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid #cbd3d0;
+  border-radius: 5px;
+  background: white;
+  font-size: 14px;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #4d8178;
+}
+
+.table-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  font-size: 13px;
+  color: #666;
+}
+
+.table-info div {
+  display: flex;
+  gap: 7px;
+}
+
+.page-btn {
+  padding: 7px 11px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid #d9dfdc;
+  border-radius: 5px;
+}
+
+table {
+  width: 100%;
+  min-width: 1000px;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 11px 10px;
+  border-bottom: 1px solid #e5e8e7;
+  text-align: left;
+  font-size: 13px;
+}
+
+th {
+  background: #edf3f1;
+  color: #333;
+}
+
+tbody tr:hover {
+  background: #fafcfc;
+}
+
+.name {
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.muted {
+  color: #777;
+  font-size: 12px;
+}
+
+.pill {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.ok {
+  background: #e4f3e8;
+  color: #2d6b3f;
+}
+
+.bad {
+  background: #f8e3e3;
+  color: #9a3f3f;
+}
+
+.preview {
+  border: 1px solid #cbd3d0;
+  background: white;
+  border-radius: 4px;
+  padding: 6px 9px;
+  cursor: pointer;
+}
+
+.empty td {
+  padding: 35px 15px;
+  text-align: center;
+  color: #777;
+}
+
+.footer {
+  text-align: center;
+  color: #777;
+  font-size: 13px;
+  padding: 5px 0 25px;
+}
+
+@media (max-width: 800px) {
+  .header-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filters {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .container {
+    width: 95%;
+  }
+
+  .block {
+    padding: 16px;
+  }
+
+  .stats,
+  .filters {
+    grid-template-columns: 1fr;
+  }
+
+  .buttons {
+    flex-direction: column;
+  }
+
+  .student {
+    width: 100%;
+  }
+}
