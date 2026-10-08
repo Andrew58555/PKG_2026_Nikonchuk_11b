@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ЛР №2 — Анализ изображений</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="logo" href="#" aria-label="Лабораторная работа №2">
+        <span class="logo-icon">✦</span>
+        <span><b>Image Lab</b><small>лабораторная №2</small></span>
+      </a>
+      <div class="student-chip">
+        <span class="avatar">АН</span>
+        <span><b>Никончук Андрей</b><small>11Б подгруппа</small></span>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">Анализ графических файлов</span>
+          <h1>Загрузи папку —<br><span>остальное сделает анализатор</span></h1>
+          <p>Приложение определяет формат изображения и читает его основные характеристики напрямую из структуры файла.</p>
+          <div class="format-list" aria-label="Поддерживаемые форматы">
+            <span>JPEG</span><span>PNG</span><span>GIF</span><span>TIFF</span><span>BMP</span><span>PCX</span>
+          </div>
+        </div>
+
+        <div class="upload-card">
+          <div class="upload-illustration" aria-hidden="true">
+            <div class="folder-shape">⌁</div>
+          </div>
+          <h2>Начнём с файлов</h2>
+          <p>Выбери папку с изображениями. Обработка происходит локально в браузере.</p>
+          <div class="upload-actions">
+            <label class="button primary" for="folderInput">Выбрать папку</label>
+            <input id="folderInput" type="file" webkitdirectory directory multiple hidden>
+            <button id="clearBtn" class="button secondary" disabled>Очистить</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="progress-card">
+        <div class="progress-main">
+          <div class="progress-copy">
+            <span class="mini-label">Состояние обработки</span>
+            <strong id="progressText">Ожидание файлов</strong>
+          </div>
+          <div class="progress-value" id="progressPercent">0%</div>
+          <div class="progress"><div id="progressBar"></div></div>
+        </div>
+
+        <div class="metrics">
+          <div class="metric"><span class="metric-icon">◫</span><span><small>Файлы</small><strong id="totalCount">0</strong></span></div>
+          <div class="metric"><span class="metric-icon">✓</span><span><small>Готово</small><strong id="doneCount">0</strong></span></div>
+          <div class="metric"><span class="metric-icon">!</span><span><small>Ошибки</small><strong id="badCount">0</strong></span></div>
+          <div class="metric"><span class="metric-icon">◷</span><span><small>Время</small><strong id="elapsed">0.0 c</strong></span></div>
+        </div>
+      </section>
+
+      <section class="results-section">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">Результаты</span>
+            <h2>Что удалось найти</h2>
+          </div>
+          <p>Используй поиск и фильтры, чтобы быстро найти нужный файл.</p>
+        </div>
+
+        <div class="toolbar-card">
+          <label class="field search-field">
+            <span class="field-label">Поиск</span>
+            <span class="field-control"><span class="field-icon">⌕</span><input id="search" placeholder="Например: photo.png"></span>
+          </label>
+
+          <label class="field">
+            <span class="field-label">Статус</span>
+            <select id="statusFilter">
+              <option value="all">Все файлы</option>
+              <option value="ok">Корректные</option>
+              <option value="bad">С ошибками</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span class="field-label">Формат</span>
+            <select id="formatFilter">
+              <option value="all">Все форматы</option>
+              <option>JPEG</option><option>GIF</option><option>TIFF</option>
+              <option>BMP</option><option>PNG</option><option>PCX</option>
+            </select>
+          </label>
+
+          <button id="exportBtn" class="button export" disabled>Экспорт CSV</button>
+        </div>
+
+        <div class="table-card">
+          <div class="table-top">
+            <span id="pageInfo">Нет результатов</span>
+            <div class="table-nav">
+              <span>100 строк на странице</span>
+              <button id="prevPage" class="pager" disabled aria-label="Предыдущая страница">←</button>
+              <button id="nextPage" class="pager" disabled aria-label="Следующая страница">→</button>
+            </div>
+          </div>
+
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Просмотр</th><th>Файл</th><th>Формат</th><th>Размер</th><th>Разрешение</th>
+                  <th>Глубина</th><th>Сжатие</th><th>Статус</th><th>Сведения</th>
+                </tr>
+              </thead>
+              <tbody id="resultsBody">
+                <tr class="empty"><td colspan="9"><span class="empty-icon">☁</span><b>Здесь появятся результаты</b><small>Сначала выбери папку с изображениями</small></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <span>Лабораторная работа №2</span>
+        <span>Ручной парсинг • Blob • Web Workers • Проверка сигнатур</span>
+      </footer>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920" integrity="sha512-L0ha0OXavK/8okipN9F8BtP84dg9DUhPERbBXzwI6dgTA55d2+yweo3pn5CSFYs45/r8md2+xvUPtTdvTNRfjA==" data-cf-beacon='{"version":"2024.11.0","token":"7939e04a4baf43c8b86a560f74aac60e","spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
