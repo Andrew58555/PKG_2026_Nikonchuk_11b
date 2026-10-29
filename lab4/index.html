@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Лабораторная работа №4 — базовые растровые алгоритмы, виртуальный растр, benchmark, Wu и Castle-Piteway.">
+  <title>Лабораторная работа №4 — Растровые алгоритмы</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div>
+        <p class="eyebrow">Компьютерная графика · ЛР №4</p>
+        <h1>Базовые растровые алгоритмы</h1>
+        <p class="subtitle">Растеризация через виртуальную сетку без функций рисования линий и окружностей.</p>
+      </div>
+      <a class="report-link" href="./report.html">Открыть отчёт</a>
+    </div>
+  </header>
+
+  <nav class="page-nav" aria-label="Разделы страницы">
+    <a href="#visualizer">Визуализация</a>
+    <a href="#benchmark">Benchmark</a>
+    <a href="#requirements">Требования 10/10</a>
+  </nav>
+
+  <main>
+    <section id="visualizer" class="section">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">1. Визуализация</p>
+          <h2>Дискретная координатная сетка</h2>
+        </div>
+        <span class="badge">VirtualGrid 81 × 61</span>
+      </div>
+
+      <div class="visualizer-layout">
+        <aside class="control-card">
+          <label class="field">
+            <span>Алгоритм</span>
+            <select id="algorithm">
+              <option value="stepLine">Пошаговый алгоритм</option>
+              <option value="ddaLine">ЦДА (DDA)</option>
+              <option value="bresenhamLine" selected>Брезенхем — отрезок</option>
+              <option value="bresenhamCircle">Брезенхем — окружность</option>
+              <option value="wuLine">Ву — сглаженная линия</option>
+              <option value="castlePitewayEllipse">Castle–Piteway — коника (эллипс)</option>
+            </select>
+          </label>
+
+          <div id="lineInputs" class="input-grid">
+            <label class="field"><span>x₀</span><input id="x0" type="number" value="-12" min="-40" max="40"></label>
+            <label class="field"><span>y₀</span><input id="y0" type="number" value="-6" min="-30" max="30"></label>
+            <label class="field"><span>x₁</span><input id="x1" type="number" value="18" min="-40" max="40"></label>
+            <label class="field"><span>y₁</span><input id="y1" type="number" value="11" min="-30" max="30"></label>
+          </div>
+
+          <div id="circleInputs" class="input-grid hidden">
+            <label class="field"><span>x центра</span><input id="circleX" type="number" value="0" min="-30" max="30"></label>
+            <label class="field"><span>y центра</span><input id="circleY" type="number" value="0" min="-20" max="20"></label>
+            <label class="field full"><span>Радиус</span><input id="radius" type="number" value="12" min="1" max="28"></label>
+          </div>
+
+          <div id="ellipseInputs" class="input-grid hidden">
+            <label class="field"><span>x центра</span><input id="ellipseX" type="number" value="0" min="-25" max="25"></label>
+            <label class="field"><span>y центра</span><input id="ellipseY" type="number" value="0" min="-18" max="18"></label>
+            <label class="field"><span>Rₓ</span><input id="rx" type="number" value="18" min="1" max="34"></label>
+            <label class="field"><span>Rᵧ</span><input id="ry" type="number" value="10" min="1" max="24"></label>
+          </div>
+
+          <label class="field range-field">
+            <span>Масштаб пикселя: <strong id="zoomValue">16 px</strong></span>
+            <input id="zoom" type="range" min="8" max="28" value="16" step="1">
+          </label>
+
+          <div class="button-row">
+            <button id="drawButton" class="button primary" type="button">Построить</button>
+            <button id="exampleButton" class="button" type="button">Пример</button>
+            <button id="clearButton" class="button ghost" type="button">Очистить</button>
+          </div>
+
+          <div class="mini-stats">
+            <div><span>Закрашено ячеек</span><strong id="litPixels">0</strong></div>
+            <div><span>Вызовов SetPixel</span><strong id="writeCount">0</strong></div>
+          </div>
+
+          <div class="mapping-note">
+            <strong>Привязка координат</strong>
+            <p>Целая точка (x, y) соответствует <b>центру</b> одной ячейки растра. Границы ячейки проходят по x ± 0,5 и y ± 0,5. Оси x=0 и y=0 проходят через центры нулевого столбца и строки.</p>
+          </div>
+        </aside>
+
+        <div class="grid-card">
+          <div class="grid-toolbar">
+            <div>
+              <strong id="algorithmTitle">Брезенхем — отрезок</strong>
+              <span id="algorithmHint">Целочисленная ошибка выбирает ближайший пиксель.</span>
+            </div>
+            <span class="legend"><i></i> интенсивность пикселя</span>
+          </div>
+          <div class="canvas-scroll">
+            <canvas id="gridCanvas" aria-label="Виртуальная растровая сетка"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <details class="trace-card" open>
+        <summary>Сопроводительные вычисления текущего примера</summary>
+        <div class="trace-intro" id="traceIntro"></div>
+        <div class="table-scroll">
+          <table>
+            <thead id="traceHead"></thead>
+            <tbody id="traceBody"></tbody>
+          </table>
+        </div>
+        <p class="table-note" id="traceNote"></p>
+      </details>
+    </section>
+
+    <section id="benchmark" class="section alt-section">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">2. Производительность</p>
+          <h2>Автоматический стресс-тест</h2>
+        </div>
+        <span class="badge success">UI не входит в замер</span>
+      </div>
+
+      <div class="benchmark-description">
+        <p>Полный тест генерирует <strong>100 000 отрезков во всех 8 октантах</strong> и <strong>50 000 окружностей</strong>. Измеряется только заполнение <code>VirtualGrid</code> через <code>performance.now()</code>; графики рисуются уже после окончания измерений.</p>
+        <button id="benchmarkButton" class="button primary" type="button">Запустить полный benchmark</button>
+      </div>
+
+      <div id="benchmarkProgressBox" class="progress-box hidden" aria-live="polite">
+        <div class="progress-line"><span id="benchmarkStatus">Подготовка...</span><strong id="benchmarkPercent">0%</strong></div>
+        <progress id="benchmarkProgress" max="100" value="0"></progress>
+      </div>
+
+      <div id="benchmarkResults" class="hidden">
+        <div class="result-cards">
+          <div class="result-card"><span>Пошаговый · 100k</span><strong id="step100k">—</strong></div>
+          <div class="result-card"><span>ЦДА · 100k</span><strong id="dda100k">—</strong></div>
+          <div class="result-card"><span>Брезенхем · 100k</span><strong id="bres100k">—</strong></div>
+          <div class="result-card"><span>Ву · 100k</span><strong id="wu100k">—</strong></div>
+          <div class="result-card"><span>Окружности · 50k</span><strong id="circles50k">—</strong></div>
+        </div>
+
+        <div class="chart-grid">
+          <article class="chart-card">
+            <h3>Время от количества отрезков</h3>
+            <svg id="countChart" width="760" height="320" viewBox="0 0 760 320" role="img" aria-label="График времени от количества отрезков"></svg>
+          </article>
+          <article class="chart-card">
+            <h3>ЦДА vs Брезенхем: время от длины</h3>
+            <svg id="lengthChart" width="760" height="320" viewBox="0 0 760 320" role="img" aria-label="График времени от длины отрезков"></svg>
+          </article>
+          <article class="chart-card">
+            <h3>Окружности: время от количества</h3>
+            <svg id="circleChart" width="760" height="320" viewBox="0 0 760 320" role="img" aria-label="График времени окружностей"></svg>
+          </article>
+        </div>
+
+        <div class="analysis-box">
+          <h3>Анализ ЦДА и Брезенхема</h3>
+          <p id="benchmarkAnalysis"></p>
+          <div class="button-row">
+            <button id="exportBenchmark" class="button" type="button">Экспорт CSV</button>
+            <a class="button ghost" href="./report.html#performance">Теория в отчёте</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>ЛР №4 · Vanilla JavaScript · без библиотек растеризации и без серверной части · готово для GitHub Pages</p>
+  </footer>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
