@@ -38,8 +38,6 @@ lab4/
     ├── benchmark/
     │   ├── benchmark-core.js
     │   └── benchmark.worker.js
-    └── tests/
-        └── self-test.js
 ```
 
 ## GitHub Pages
