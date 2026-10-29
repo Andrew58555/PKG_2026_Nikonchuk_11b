@@ -47,7 +47,7 @@ lab4/
 Если репозиторий уже опубликован через Pages, достаточно положить эту папку как `lab4/` в корень репозитория. Адрес будет примерно:
 
 ```text
-https://USERNAME.github.io/REPOSITORY/lab4/
+https://andrew58555.github.io/PKG_2026_Nikonchuk_11b/lab4/
 ```
 
 Если Pages ещё не включён:
