@@ -37,10 +37,7 @@ lab3/
 │   ├── index.html
 │   └── tests.js
 └── docs/
-    ├── Отчет_ЛР3_Никончук_11Б.md
-    ├── Отчет_ЛР3_Никончук_11Б.docx
     ├── Отчет_ЛР3_Никончук_11Б.pdf
-    ├── Ответ_для_защиты_ЛР3.md
     └── figures/                  # изображения и гистограммы для отчёта
 ```
 
@@ -51,7 +48,7 @@ lab3/
 Страница ЛР3 откроется по адресу:
 
 ```text
-https://USERNAME.github.io/REPOSITORY/lab3/
+https://andrew58555.github.io/PKG_2026_Nikonchuk_11b/lab3/
 ```
 
 ## Автотесты
@@ -59,7 +56,7 @@ https://USERNAME.github.io/REPOSITORY/lab3/
 Открой:
 
 ```text
-https://USERNAME.github.io/REPOSITORY/lab3/tests/
+https://andrew58555.github.io/PKG_2026_Nikonchuk_11b/lab3/tests/
 ```
 
 Node.js-проверки: `node tests/node-tests.mjs` (18/18). В браузерной странице тестов дополнительно доступны 23 проверки.
