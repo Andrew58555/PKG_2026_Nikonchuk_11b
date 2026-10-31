@@ -1,0 +1,1 @@
+{"name":"pkg-lab3-variant11","private":true,"type":"module","scripts":{"test":"node tests/node-tests.mjs","serve":"python -m http.server 8000"}}

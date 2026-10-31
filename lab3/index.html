@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Лабораторная работа №3 — обработка изображений</title>
+  <meta name="description" content="Лабораторная работа №3. Локальная и адаптивная пороговая обработка, линейное контрастирование.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="eyebrow">ПКГ · Лабораторная работа №3 · Вариант 11</span>
+      <h1>Обработка изображений</h1>
+    </div>
+    <div class="student">
+      <strong>Никончук Андрей Андреевич</strong>
+      <span>Подгруппа 11Б</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card filebar">
+      <div class="field file-choice">
+        <label for="sampleSelect">Тестовое изображение</label>
+        <select id="sampleSelect"></select>
+      </div>
+      <div class="file-actions">
+        <label class="button secondary" for="fileInput">Выбрать свой файл</label>
+        <input id="fileInput" type="file" accept="image/*" hidden>
+        <button id="resetBtn" class="button ghost" type="button">Сбросить</button>
+      </div>
+      <div id="dropZone" class="drop-zone">Или перетащите изображение сюда</div>
+    </section>
+
+    <section class="workspace">
+      <aside class="card controls">
+        <div class="section-title">
+          <h2>Обработка</h2>
+          <span id="modeBadge" class="mode-badge">Линейное контрастирование</span>
+        </div>
+
+        <label class="field">
+          <span>Метод</span>
+          <select id="mode">
+            <option value="linear">Линейное контрастирование</option>
+            <option value="local-mean">Локальный порог — среднее</option>
+            <option value="niblack">Локальный порог — Niblack</option>
+            <option value="sauvola">Адаптивный порог — Sauvola</option>
+            <option value="otsu">Метод Оцу</option>
+            <option value="clahe">CLAHE</option>
+          </select>
+        </label>
+
+        <div id="windowGroup" class="control-block hidden">
+          <div class="range-head"><label for="windowSize">Размер окна</label><b id="windowValue">21 × 21</b></div>
+          <input id="windowSize" type="range" min="3" max="51" step="2" value="21">
+        </div>
+
+        <div id="kGroup" class="control-block hidden">
+          <div class="range-head"><label for="kValueRange">Параметр k</label><b id="kValue">-0.20</b></div>
+          <input id="kValueRange" type="range" min="-0.60" max="0.60" step="0.01" value="-0.20">
+        </div>
+
+        <div id="rGroup" class="control-block hidden">
+          <div class="range-head"><label for="rRange">Параметр R</label><b id="rValue">128</b></div>
+          <input id="rRange" type="range" min="32" max="255" step="1" value="128">
+        </div>
+
+        <div id="contrastGroup" class="control-block">
+          <div class="range-head"><label>Границы контраста</label><b id="contrastValue">2% — 98%</b></div>
+          <div class="range-pair">
+            <input id="lowPercent" aria-label="Нижний процентиль" type="range" min="0" max="30" step="1" value="2">
+            <input id="highPercent" aria-label="Верхний процентиль" type="range" min="70" max="100" step="1" value="98">
+          </div>
+        </div>
+
+        <div id="claheGroup" class="control-block hidden">
+          <div class="range-head"><label for="tileGrid">Сетка CLAHE</label><b id="tileValue">8 × 8</b></div>
+          <input id="tileGrid" type="range" min="2" max="12" step="1" value="8">
+          <div class="range-head sub"><label for="clipLimit">Ограничение контраста</label><b id="clipValue">2.0</b></div>
+          <input id="clipLimit" type="range" min="0.5" max="8" step="0.5" value="2">
+        </div>
+
+        <label id="borderGroup" class="field hidden">
+          <span>Обработка границ</span>
+          <select id="borderMode">
+            <option value="reflect">Reflect — отражение</option>
+            <option value="clamp">Clamp — дублирование края</option>
+          </select>
+        </label>
+
+        <div class="button-stack">
+          <button id="processBtn" class="button primary" type="button">Обработать</button>
+          <button id="downloadBtn" class="button secondary" type="button" disabled>Скачать результат PNG</button>
+        </div>
+        <p id="status" class="status" role="status">Выберите изображение и метод обработки.</p>
+      </aside>
+
+      <section class="card result-card">
+        <div class="result-head">
+          <div>
+            <h2>Результат</h2>
+            <p id="sourceLabel" class="muted">Выбрано: —</p>
+          </div>
+          <div class="stats">
+            <span><b id="pixelCount">0</b> пикселей</span>
+            <span><b id="elapsed">—</b> время</span>
+            <span><b id="thresholdInfo">—</b> параметр</span>
+          </div>
+        </div>
+        <div class="preview-grid">
+          <figure>
+            <figcaption>Исходное изображение</figcaption>
+            <div class="canvas-wrap"><canvas id="beforeCanvas"></canvas></div>
+          </figure>
+          <figure>
+            <figcaption>После обработки</figcaption>
+            <div class="canvas-wrap"><canvas id="afterCanvas"></canvas></div>
+          </figure>
+        </div>
+
+        <section class="histogram-section">
+          <div class="hist-title">
+            <h3>Гистограмма яркости</h3>
+            <span class="muted">До и после обработки</span>
+          </div>
+          <div class="hist-grid">
+            <figure><figcaption>До</figcaption><canvas id="histBefore" width="600" height="180"></canvas></figure>
+            <figure><figcaption>После</figcaption><canvas id="histAfter" width="600" height="180"></canvas></figure>
+          </div>
+        </section>
+      </section>
+    </section>
+  </main>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
