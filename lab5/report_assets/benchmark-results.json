@@ -1,0 +1,162 @@
+{
+  "environment": {
+    "runtime": "Node v22.16.0",
+    "platform": "linux",
+    "arch": "x64",
+    "date": "2026-11-17T13:18:03.401Z"
+  },
+  "params": {
+    "n": 500000,
+    "seed": 2026,
+    "windowsCount": 100,
+    "eps": 1e-7,
+    "algorithms": "Cohen–Sutherland / Liang–Barsky"
+  },
+  "depthResults": [
+    {
+      "depth": 4,
+      "nodes": 971,
+      "buildMs": 95.70107,
+      "ms": 414.83818799999995,
+      "msPerFrame": 4.14838188,
+      "fpsEquivalent": 241.0578459088246,
+      "visible": 487297,
+      "candidates": 511407,
+      "checks": 5657230,
+      "mult": 1949188,
+      "div": 2035418,
+      "frames": 100
+    },
+    {
+      "depth": 6,
+      "nodes": 3079,
+      "buildMs": 99.71573699999999,
+      "ms": 417.90704400000004,
+      "msPerFrame": 4.17907044,
+      "fpsEquivalent": 239.28766321536327,
+      "visible": 487297,
+      "candidates": 511407,
+      "checks": 5105483,
+      "mult": 1949188,
+      "div": 2035418,
+      "frames": 100
+    },
+    {
+      "depth": 8,
+      "nodes": 5032,
+      "buildMs": 93.22192000000041,
+      "ms": 321.18963900000017,
+      "msPerFrame": 3.2118963900000015,
+      "fpsEquivalent": 311.3425461398521,
+      "visible": 487297,
+      "candidates": 511407,
+      "checks": 5094518,
+      "mult": 1949188,
+      "div": 2035418,
+      "frames": 100
+    },
+    {
+      "depth": 10,
+      "nodes": 5032,
+      "buildMs": 97.80153699999983,
+      "ms": 363.33771200000047,
+      "msPerFrame": 3.6333771200000045,
+      "fpsEquivalent": 275.22604094561996,
+      "visible": 487297,
+      "candidates": 511407,
+      "checks": 5094518,
+      "mult": 1949188,
+      "div": 2035418,
+      "frames": 100
+    },
+    {
+      "depth": 12,
+      "nodes": 5032,
+      "buildMs": 79.7490170000001,
+      "ms": 341.829205,
+      "msPerFrame": 3.41829205,
+      "fpsEquivalent": 292.5437573422084,
+      "visible": 487297,
+      "candidates": 511407,
+      "checks": 5094518,
+      "mult": 1949188,
+      "div": 2035418,
+      "frames": 100
+    }
+  ],
+  "densityResults": [
+    {
+      "n": 50000,
+      "buildMs": 9.483035999999629,
+      "depth": 8,
+      "ms": 20.924462999999378,
+      "msPerFrame": 0.20924462999999377,
+      "fpsEquivalent": 4779.095167221399,
+      "visible": 48654,
+      "candidates": 51185,
+      "checks": 499134,
+      "nodes": 2155,
+      "mult": 194616,
+      "div": 203719,
+      "frames": 100
+    },
+    {
+      "n": 150000,
+      "buildMs": 24.24713900000097,
+      "depth": 8,
+      "ms": 68.7540769999996,
+      "msPerFrame": 0.687540769999996,
+      "fpsEquivalent": 1454.4592024702852,
+      "visible": 146844,
+      "candidates": 154264,
+      "checks": 1528837,
+      "nodes": 2650,
+      "mult": 587376,
+      "div": 613867,
+      "frames": 100
+    },
+    {
+      "n": 500000,
+      "buildMs": 84.76262099999985,
+      "depth": 8,
+      "ms": 289.1123660000012,
+      "msPerFrame": 2.891123660000012,
+      "fpsEquivalent": 345.8862773099079,
+      "visible": 484616,
+      "candidates": 508359,
+      "checks": 5040514,
+      "nodes": 4851,
+      "mult": 1938464,
+      "div": 2023489,
+      "frames": 100
+    }
+  ],
+  "brute": {
+    "ms": 1398.9152410000006,
+    "msPerFrame": 13.989152410000006,
+    "fpsEquivalent": 71.48395919149183,
+    "visible": 487297,
+    "candidates": 511407,
+    "checks": 50000000,
+    "nodes": 0,
+    "mult": 1949188,
+    "div": 2035418,
+    "frames": 100
+  },
+  "bestDepth": 8,
+  "ops": {
+    "n": 100000,
+    "cohen": {
+      "multiplications": 2036,
+      "divisions": 2036,
+      "iterations": 102036,
+      "visible": 7933
+    },
+    "liang": {
+      "multiplications": 31732,
+      "divisions": 192123,
+      "iterations": 192123,
+      "visible": 7933
+    }
+  }
+}

@@ -1,0 +1,1 @@
+{"name":"lab5-clipping","version":"1.0.0","private":true,"type":"module","description":"ЛР №5: алгоритмы отсечения, GitHub Pages без сборки","scripts":{"test":"node tests/geometry.test.mjs","benchmark":"node tests/benchmark.mjs"}}
