@@ -59,7 +59,7 @@ https://andrew58555.github.io/PKG_2026_Nikonchuk_11b/lab3/
 Открой:
 
 ```text
-https://USERNAME.github.io/REPOSITORY/lab3/tests/
+https://andrew58555.github.io/PKG_2026_Nikonchuk_11b/lab3/tests
 ```
 
 Node.js-проверки: `node tests/node-tests.mjs` (18/18). В браузерной странице тестов дополнительно доступны 23 проверки.
